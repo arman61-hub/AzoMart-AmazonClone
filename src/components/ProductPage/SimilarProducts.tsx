@@ -26,7 +26,6 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
             href={`/product/${prod.id}`}
             className="flex flex-col p-2 rounded hover:shadow-md transition-all duration-200 group hover:bg-gray-50 border border-transparent hover:border-gray-150"
           >
-            {/* Image */}
             <div className="relative w-full pt-[100%] overflow-hidden mb-2 bg-white flex justify-center items-center">
               <img
                 src={prod.images[0] || "/placeholder.png"}
@@ -34,18 +33,12 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-102 transition-all duration-300"
               />
             </div>
-
-            {/* Title */}
             <span className="text-xs font-semibold text-amazon-river group-hover:text-red-700 group-hover:underline line-clamp-2 min-h-[32px] leading-tight mb-1">
               {prod.title}
             </span>
-
-            {/* Stars */}
             <div className="mb-1 shrink-0">
               <StarRating rating={prod.ratingAvg} size={11} />
             </div>
-
-            {/* Price */}
             <span className="text-sm font-bold text-gray-900 mt-auto">
               {formatPrice(prod.price)}
             </span>
