@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} bg-gray-50 text-gray-900 flex flex-col min-h-full antialiased`}>
+      <body className={`${inter.className} bg-gray-50 text-gray-900 flex flex-col min-h-full antialiased overflow-x-hidden`}>
         <Navbar />
         <CategoryBar />
         <main className="flex-grow flex flex-col">

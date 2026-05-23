@@ -55,9 +55,9 @@ export default function SearchBar() {
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}
-        className="h-full px-3 text-xs text-gray-700 bg-gray-100 hover:bg-gray-200 border-r border-gray-300 outline-none cursor-pointer max-w-[130px] font-sans"
+        className="h-full px-2 sm:px-3 text-xs text-gray-700 bg-gray-100 hover:bg-gray-200 border-r border-gray-300 outline-none cursor-pointer max-w-[80px] sm:max-w-[130px] truncate font-sans"
       >
-        <option value="all">All Departments</option>
+        <option value="all">All</option>
         {categories.map((cat) => (
           <option key={cat.id} value={cat.slug}>
             {cat.name}

@@ -8,6 +8,7 @@ import { Category } from "@/types";
 export default function FilterSidebar() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isOpen, setIsOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [customMin, setCustomMin] = useState("");
   const [customMax, setCustomMax] = useState("");
@@ -80,18 +81,39 @@ export default function FilterSidebar() {
   return (
     <aside className="w-full md:w-56 bg-white p-4 rounded-lg border border-gray-200 shrink-0 font-sans h-fit">
 
-      {/* Clear Filters Title */}
-      <div className="flex items-center justify-between mb-5">
+      {/* Clear Filters Title & Mobile Toggle */}
+      <div className="flex items-center justify-between border-b border-gray-100 pb-3 md:border-none md:pb-0">
         <h2 className="text-sm font-extrabold text-gray-900">Filters</h2>
+        <div className="flex items-center space-x-2 md:hidden">
+          {isAnyFilterActive && (
+            <button
+              onClick={clearAllFilters}
+              className="text-xs text-amazon-river hover:underline font-semibold flex items-center cursor-pointer mr-1"
+            >
+              <X size={12} className="mr-0.5" /> Clear
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-xs bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded px-2.5 py-1 font-bold text-gray-800 transition-all cursor-pointer select-none"
+          >
+            {isOpen ? "Hide Filters" : "Show Filters"}
+          </button>
+        </div>
+
         {isAnyFilterActive && (
           <button
             onClick={clearAllFilters}
-            className="text-xs text-amazon-river hover:underline font-semibold flex items-center cursor-pointer"
+            className="text-xs text-amazon-river hover:underline font-semibold items-center cursor-pointer hidden md:flex"
           >
             <X size={12} className="mr-0.5" /> Clear All
           </button>
         )}
       </div>
+
+      {/* Filter Options Content (Collapsable on Mobile) */}
+      <div className={`${isOpen ? "block" : "hidden"} md:block mt-4 md:mt-5`}>
 
       {/* Category Section */}
       <div className="mb-6">
@@ -236,6 +258,7 @@ export default function FilterSidebar() {
             Go
           </button>
         </form>
+      </div>
       </div>
     </aside>
   );

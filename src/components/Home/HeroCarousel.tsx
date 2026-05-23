@@ -125,19 +125,19 @@ export default function HeroCarousel() {
       {/* Left Navigation Arrow */}
       <button
         onClick={handlePrev}
-        className="absolute left-0 top-[40%] transform -translate-y-1/2 h-[150px] w-14 flex items-center justify-center text-white hover:text-amazon z-30 cursor-pointer outline-none border-none bg-transparent hover:bg-black/10 transition-all active:scale-95"
+        className="absolute left-0 top-[40%] transform -translate-y-1/2 h-[80px] sm:h-[150px] w-8 sm:w-14 flex items-center justify-center text-white hover:text-amazon z-30 cursor-pointer outline-none border-none bg-transparent hover:bg-black/10 transition-all active:scale-95"
         aria-label="Previous Slide"
       >
-        <ChevronLeft size={44} className="stroke-[1.5]" />
+        <ChevronLeft className="w-7 h-7 sm:w-11 sm:h-11 stroke-[1.5]" />
       </button>
 
       {/* Right Navigation Arrow */}
       <button
         onClick={handleNext}
-        className="absolute right-0 top-[40%] transform -translate-y-1/2 h-[150px] w-14 flex items-center justify-center text-white hover:text-amazon z-30 cursor-pointer outline-none border-none bg-transparent hover:bg-black/10 transition-all active:scale-95"
+        className="absolute right-0 top-[40%] transform -translate-y-1/2 h-[80px] sm:h-[150px] w-8 sm:w-14 flex items-center justify-center text-white hover:text-amazon z-30 cursor-pointer outline-none border-none bg-transparent hover:bg-black/10 transition-all active:scale-95"
         aria-label="Next Slide"
       >
-        <ChevronRight size={44} className="stroke-[1.5]" />
+        <ChevronRight className="w-7 h-7 sm:w-11 sm:h-11 stroke-[1.5]" />
       </button>
     </div>
   );
