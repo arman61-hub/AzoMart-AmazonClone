@@ -46,13 +46,13 @@ export async function POST(request: NextRequest) {
 
     // Calculate totals
     const subtotal = cartItems.reduce(
-      (sum, item) => sum + item.product.price * item.quantity,
+      (sum: number, item: any) => sum + item.product.price * item.quantity,
       0
     );
     
     // Tax calculated dynamically based on product categories (inclusive)
     const tax = cartItems.reduce(
-      (sum, item) => sum + calculateInclusiveTax(item.product.price, item.product.category?.slug || "") * item.quantity,
+      (sum: number, item: any) => sum + calculateInclusiveTax(item.product.price, item.product.category?.slug || "") * item.quantity,
       0
     );
     
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
 
 
     // Run transaction
-    const order = await prisma.$transaction(async (tx) => {
+    const order = await prisma.$transaction(async (tx: any) => {
       // 1. Create the Order
       const newOrder = await tx.order.create({
         data: {

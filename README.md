@@ -1,81 +1,96 @@
-# AzoMart — Premium Amazon Clone
+# AzoMart 🛒 (Amazon Clone - Full Stack Implementation)
 
-AzoMart is a full-stack, visually rich, and highly interactive Amazon clone built completely from scratch using Next.js 14 App Router, PostgreSQL + Neon DB, Prisma ORM, Zustand global state, and Tailwind CSS.
-
-> **CRITICAL ARCHITECTURAL BOUNDARY**: This project is built entirely from scratch. No templates, boilerplate shops, or direct repository cloning was used. All styling, component markup, relational schema layouts, API endpoints, and global states are hand-coded to guarantee complete system mastery.
+AzoMart is a feature-rich, high-performance, and visually premium Amazon Clone built entirely from scratch. Leveraging Next.js 14, Prisma ORM (v7), and PostgreSQL, the platform delivers a native-feeling shopping experience with robust server-side APIs, interactive carousels, responsive grid columns, inclusive tax breakdowns, and animated checkouts.
 
 ---
 
-## 📸 Interactive UI Mockups Showcase
+## 🚀 Key Visual & Functional Features
 
-Below are the premium UI screens tailored for desktop and mobile displays:
-
-| Page | Preview / Screenshot | Description |
-|---|---|---|
-| **Product Listings & Home** | ![Home Page](file:///C:/Users/arman/.gemini/antigravity-ide/brain/1d5381e1-6ad4-4d24-96c4-4a72b57a08a3/home_and_listings.png) | Dynamic category banners, sorting, multi-criteria filtering sidebar, search, and responsive cards with hover effects. |
-| **Product Details** | ![Product Details](file:///C:/Users/arman/.gemini/antigravity-ide/brain/1d5381e1-6ad4-4d24-96c4-4a72b57a08a3/product_detail.png) | Image thumbnails switcher, detailed rating breakup chart, lists of verified customer reviews, similar products recommendations, and buy action box. |
-| **Shopping Cart** | ![Shopping Cart](file:///C:/Users/arman/.gemini/antigravity-ide/brain/1d5381e1-6ad4-4d24-96c4-4a72b57a08a3/shopping_cart.png) | Dynamic quantity dropdown sync, instant delete controls, order values calculator, and free shipping progress alerts. |
-| **Secure Checkout** | ![Secure Checkout](file:///C:/Users/arman/.gemini/antigravity-ide/brain/1d5381e1-6ad4-4d24-96c4-4a72b57a08a3/secure_checkout.png) | Distraction-free secure minimal header, validated shipping addresses panel, static Cash on Delivery (COD) preselection, and final placement controls. |
-| **Order Confirmation** | ![Order Confirmation](file:///C:/Users/arman/.gemini/antigravity-ide/brain/1d5381e1-6ad4-4d24-96c4-4a72b57a08a3/order_confirmation.png) | Success check mark animations, simulated estimated arrival times, recap receipt, printable bills, and purchase details logs. |
+1. **Fluid Responsive Architecture**:
+   - **Double-Row Mobile & Tablet Navbar**: Below 1024px (`lg`), secondary links fold cleanly, and the search bar wraps to a full-width row, preventing visual overflows on iPad Mini, Surface Pro, and mobile screens.
+   - **Collapsible Mobile Department Filters**: Sidebar controls collapse under a responsive `[Show Filters]` panel to optimize catalog workspace.
+   - **Dynamic Grid Product Limits**: Automatically adjusts pagination bounds dynamically based on column count (4 products on 1-2 columns, 6 products on 3 columns, and 8 products on 4 columns) to eliminate awkward empty grid slots.
+2. **Interactive Product Gallery Slider**: Next/previous chevrons, slide dot navigation, and thumbnail grid panels in product detail pages.
+3. **Unified Checkout & Mockup Order Confirmation**:
+   - Full shipping validation with Cash on Delivery (COD) methods.
+   - Custom high-fidelity confirmation card redesigned to perfectly match the official Amazon mockup (green check alert banner, left-column reference and delivery addresses, right-column summarized order panel).
+   - **10-Second Auto-Redirect Countdown**: Smoothly takes the customer back to the Home page after 10 seconds of receipt display.
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Component | Description |
-|---|---|---|
-| **Framework** | **Next.js 14** | App Router architecture. Unified Frontend UI views + Backend REST API routes. |
-| **Language** | **TypeScript + JavaScript** | Strict typing for component interfaces and APIs; standard Node for database seeding. |
-| **Database** | **PostgreSQL (Neon)** | Fully relational serverless cloud database for high availability and transactional speed. |
-| **ORM** | **Prisma Client** | Robust type-safe query building, database modeling, migrations, and transactional locks. |
-| **Styling** | **Tailwind CSS v3** | Modern CSS directives customized with genuine Amazon brand colors. |
-| **State** | **Zustand** | Global lightweight client shopping cart store integrated with server-side API sync. |
+- **Core Framework**: [Next.js 14 (App Router)](https://nextjs.org/) (TypeScript v5)
+- **Database & Query Layer**: [PostgreSQL](https://www.postgresql.org/) with [Prisma ORM v7](https://www.prisma.io/)
+- **State Management**: [Zustand v5](https://github.com/pmndrs/zustand) (Client state with background REST synchronization)
+- **Styling**: [Tailwind CSS v3](https://tailwindcss.com/) (Custom HSL palettes, Amazon dark/light aesthetics, and fluid animations)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
 ---
 
-## 🚀 Setup & Installation Instructions
+## ⚙️ Local Setup Instructions
 
-Follow these steps to run the application locally on your machine:
+Follow these steps to run AzoMart locally on your system:
 
-### 1. Configure Database Credentials
-Create a `.env` file in the project root directory and add your Neon PostgreSQL connection string:
-```env
-DATABASE_URL="postgresql://user:password@ep-xxx.us-east-2.aws.neon.tech/azomart?sslmode=require"
-```
+### 1. Prerequisites
+Ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (v18.0.0 or higher)
+- [PostgreSQL](https://www.postgresql.org/) running locally or in a container
 
-### 2. Install Project Dependencies
-Run the package manager installation script:
+### 2. Clone and Install Dependencies
+Navigate to your project workspace directory and run:
 ```bash
 npm install
 ```
 
-### 3. Deploy Database Schema
-Push the relational schema definitions directly to your Neon cloud database:
+### 3. Configure Environment Variables
+Create a `.env` file in the root directory:
+```env
+# PostgreSQL connection string
+DATABASE_URL="postgresql://postgres:yourpassword@localhost:5412/azomart_db?schema=public"
+```
+
+### 4. Initialize the Database
+Generate your Prisma v7 Client and push the schema definitions to your active PostgreSQL database:
 ```bash
 npx prisma db push
 ```
 
-### 4. Seed Mock Data
-Populate the database with 6 distinct product departments, 52 premium simulated products, and over 150 detailed customer reviews:
+### 5. Seed the Catalog
+Populate the database with the pre-configured categories and 29 unique, high-quality products:
 ```bash
 npx prisma db seed
 ```
+*(The seeder runs `prisma/seed.js` and inserts premium Unsplash media, structured category department boundaries, and pre-composed verified reviews).*
 
-### 5. Launch Local Dev Server
-Fire up the Next.js development server:
+### 6. Run the Development Server
+Launch the application:
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your web browser to browse AzoMart!
+Navigate to [http://localhost:3000](http://localhost:3000) in your web browser.
+
+### 7. Production Build Check
+To verify strict type safety and compiler constraints before production deployment:
+```bash
+npm run build
+```
 
 ---
 
-## 📐 Relational Schema Architecture
+## 🧠 Architectural & Implementation Assumptions
 
-The database structure features 6 relational models ensuring complete referential integrity:
-* **Category**: Multi-product departments (slug, name, icon banner).
-* **Product**: Catalog inventory (brand, price, original price, discount, calculated ratings cache).
-* **Review**: Customer feedback (stars rating scale, titles, comments) linking to products.
-* **CartItem**: User shopping cart entries synced using unique user/product constraints.
-* **Order**: Placed transactions recap (unique invoice order numbers, full shipping addresses, totals).
-* **OrderItem**: Purchased item list carrying snapshots of product prices at purchase time to protect order history integrity.
+The following key technical decisions and assumptions were made during the development of AzoMart:
+
+1. **Session & Cart Context**:
+   - To provide immediate, frictionless checkout flows without requiring authentication integrations, a static identifier (`default-user`) is assumed as the user session. 
+   - All cart CRUD operations are bound to this session, persisting items in the database across page refreshes.
+2. **Inclusive GST Calculation**:
+   - Formulated a standard inclusive tax schema where listed product prices already contain tax (averaging 8% across categories). 
+   - During checkout, the tax contribution is computed dynamically using custom reverse-percent tax math so it is accurately broken down without altering the customer's payment amount.
+3. **Estimated Shipping ETA**:
+   - Assumed a simulated doorstep shipping standard: standard CoD delivery times are calculated relative to the purchase timestamp, scheduled exactly for "Tomorrow" (or Next Day).
+4. **Prisma v7pg Driver Adapter**:
+   - Configured the database layer using the native `@prisma/adapter-pg` driver combined with standard `pg` connection pools. This maintains thread-safety and client reuse during Fast Refresh cycles.
+5. **Responsive Collapse Trigger (`lg` breakpoint)**:
+   - Assumed that screens below `1024px` (tablets and mobiles) require simplified header navigation. Secondary widgets (Delivery Address, Language EN flag, and Returns) are hidden to maximize the search bar field and prevent horizontal layouts from expanding past the viewport boundaries.
