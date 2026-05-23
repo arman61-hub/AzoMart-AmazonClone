@@ -21,6 +21,25 @@ function HomePageContent() {
     totalPages: 1,
   });
 
+  const [limit, setLimit] = useState<number | null>(null);
+
+  useEffect(() => {
+    const updateLimit = () => {
+      const width = window.innerWidth;
+      if (width < 1024) {
+        setLimit(4);
+      } else if (width < 1280) {
+        setLimit(6);
+      } else {
+        setLimit(8);
+      }
+    };
+
+    updateLimit();
+    window.addEventListener("resize", updateLimit);
+    return () => window.removeEventListener("resize", updateLimit);
+  }, []);
+
   const search = searchParams.get("search") || "";
   const category = searchParams.get("category") || "";
   const minPrice = searchParams.get("minPrice") || "";
@@ -30,6 +49,8 @@ function HomePageContent() {
   const page = searchParams.get("page") || "1";
 
   useEffect(() => {
+    if (limit === null) return;
+    const currentLimit = limit;
     async function fetchProducts() {
       setLoading(true);
       try {
@@ -41,7 +62,7 @@ function HomePageContent() {
           minRating,
           sortBy,
           page,
-          limit: "8",
+          limit: currentLimit.toString(),
         });
         const res = await fetch(`/api/products?${query.toString()}`);
         if (res.ok) {
@@ -56,7 +77,7 @@ function HomePageContent() {
       }
     }
     fetchProducts();
-  }, [search, category, minPrice, maxPrice, minRating, sortBy, page]);
+  }, [search, category, minPrice, maxPrice, minRating, sortBy, page, limit]);
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const params = new URLSearchParams(searchParams.toString());
