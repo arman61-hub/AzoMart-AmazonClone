@@ -115,11 +115,8 @@ export default function OrderConfirmationPage() {
 
           {/* Two-Column Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            
             {/* Left Column: Reference & Shipping */}
             <div className="md:col-span-7 space-y-6 text-[#0f1111]">
-              
-              {/* Order Reference */}
               <div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2 font-sans">
                   Order Reference
@@ -194,7 +191,7 @@ export default function OrderConfirmationPage() {
                 {/* Grand Total */}
                 <div className="border-t border-gray-200 pt-3 flex justify-between items-baseline leading-normal">
                   <span className="text-sm font-bold text-gray-900">Total Paid:</span>
-                  <span className="text-lg font-extrabold text-gray-900">
+                  <span className="text-lg font-bold text-gray-900">
                     {formatPrice(order.totalAmount)}
                   </span>
                 </div>

@@ -84,7 +84,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Price Section */}
       <div className="flex items-baseline space-x-1.5 mb-1.5 font-sans">
-        <span className="text-xl font-extrabold text-gray-900">
+        <span className="text-xl font-bold text-gray-900">
           {formatPrice(product.price)}
         </span>
         {product.discount > 0 && (

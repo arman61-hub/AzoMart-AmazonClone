@@ -17,7 +17,6 @@ export default function Navbar() {
     <header className="bg-amazon-dark text-white w-full sticky top-0 z-50 shadow-md">
       {/* Upper Row: Logo, Accounts, Cart & Menu toggles */}
       <div className="h-[60px] px-2 sm:px-4 md:px-6 flex items-center justify-between space-x-2 md:space-x-4 font-sans select-none">
-        
         {/* Brand Logo */}
         <Link
           href="/"

@@ -105,7 +105,6 @@ export default function CartPage() {
               <div className="divide-y divide-gray-200">
                 {items.map((item) => (
                   <div key={item.id} className="py-5 first:pt-0 last:pb-0 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5">
-                    {/* Item Image */}
                     <Link href={`/product/${item.productId}`} className="w-24 h-24 sm:w-28 sm:h-28 shrink-0 bg-white border border-gray-200 rounded overflow-hidden flex justify-center items-center mx-auto sm:mx-0 relative">
                       <img
                         src={item.product.images[0] || "/placeholder.png"}
@@ -118,7 +117,6 @@ export default function CartPage() {
                     {/* Item Details */}
                     <div className="flex-grow flex flex-col justify-between">
                       <div>
-                        {/* Title */}
                         <div className="flex flex-col sm:flex-row justify-between sm:space-x-4 items-start mb-1">
                           <Link
                             href={`/product/${item.productId}`}
@@ -130,8 +128,6 @@ export default function CartPage() {
                             {formatPrice(item.product.price * item.quantity)}
                           </span>
                         </div>
-
-                        {/* Brand & Stock status */}
                         <span className="text-xs text-gray-500 block mb-1">Brand: {item.product.brand}</span>
                         <div className="text-xs">
                           {item.product.stock > 0 ? (
@@ -141,8 +137,6 @@ export default function CartPage() {
                           )}
                         </div>
                       </div>
-
-                      {/* Controls Area (Qty select, Remove) */}
                       <div className="flex flex-wrap items-center gap-4 mt-4">
                         <QuantitySelector
                           quantity={item.quantity}

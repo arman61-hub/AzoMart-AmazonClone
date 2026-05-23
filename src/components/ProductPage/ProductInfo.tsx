@@ -62,12 +62,12 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           {product.discount > 0 ? (
             <div className="flex items-baseline space-x-2">
               <span className="text-red-600 text-2xl font-light">-{product.discount}%</span>
-              <span className="text-3xl font-extrabold text-gray-900">
+              <span className="text-3xl font-bold text-gray-900">
                 {formatPrice(product.price)}
               </span>
             </div>
           ) : (
-            <span className="text-3xl font-extrabold text-gray-900">
+            <span className="text-3xl font-bold text-gray-900">
               {formatPrice(product.price)}
             </span>
           )}
@@ -111,7 +111,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         <div className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm space-y-4 font-sans text-sm sticky top-20">
           {/* Active Price */}
           <div>
-            <span className="text-2xl font-extrabold text-gray-900">
+            <span className="text-2xl font-bold text-gray-900">
               {formatPrice(product.price)}
             </span>
           </div>

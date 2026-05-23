@@ -46,7 +46,7 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
             </div>
 
             {/* Price */}
-            <span className="text-sm font-extrabold text-gray-900 mt-auto">
+            <span className="text-sm font-bold text-gray-900 mt-auto">
               {formatPrice(prod.price)}
             </span>
           </Link>
