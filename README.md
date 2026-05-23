@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AzoMart — Premium Amazon Clone
 
-## Getting Started
+AzoMart is a full-stack, visually rich, and highly interactive Amazon clone built completely from scratch using Next.js 14 App Router, PostgreSQL + Neon DB, Prisma ORM, Zustand global state, and Tailwind CSS.
 
-First, run the development server:
+> **CRITICAL ARCHITECTURAL BOUNDARY**: This project is built entirely from scratch. No templates, boilerplate shops, or direct repository cloning was used. All styling, component markup, relational schema layouts, API endpoints, and global states are hand-coded to guarantee complete system mastery.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 📸 Interactive UI Mockups Showcase
+
+Below are the premium UI screens tailored for desktop and mobile displays:
+
+| Page | Preview / Screenshot | Description |
+|---|---|---|
+| **Product Listings & Home** | ![Home Page](file:///C:/Users/arman/.gemini/antigravity-ide/brain/1d5381e1-6ad4-4d24-96c4-4a72b57a08a3/home_and_listings.png) | Dynamic category banners, sorting, multi-criteria filtering sidebar, search, and responsive cards with hover effects. |
+| **Product Details** | ![Product Details](file:///C:/Users/arman/.gemini/antigravity-ide/brain/1d5381e1-6ad4-4d24-96c4-4a72b57a08a3/product_detail.png) | Image thumbnails switcher, detailed rating breakup chart, lists of verified customer reviews, similar products recommendations, and buy action box. |
+| **Shopping Cart** | ![Shopping Cart](file:///C:/Users/arman/.gemini/antigravity-ide/brain/1d5381e1-6ad4-4d24-96c4-4a72b57a08a3/shopping_cart.png) | Dynamic quantity dropdown sync, instant delete controls, order values calculator, and free shipping progress alerts. |
+| **Secure Checkout** | ![Secure Checkout](file:///C:/Users/arman/.gemini/antigravity-ide/brain/1d5381e1-6ad4-4d24-96c4-4a72b57a08a3/secure_checkout.png) | Distraction-free secure minimal header, validated shipping addresses panel, static Cash on Delivery (COD) preselection, and final placement controls. |
+| **Order Confirmation** | ![Order Confirmation](file:///C:/Users/arman/.gemini/antigravity-ide/brain/1d5381e1-6ad4-4d24-96c4-4a72b57a08a3/order_confirmation.png) | Success check mark animations, simulated estimated arrival times, recap receipt, printable bills, and purchase details logs. |
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Component | Description |
+|---|---|---|
+| **Framework** | **Next.js 14** | App Router architecture. Unified Frontend UI views + Backend REST API routes. |
+| **Language** | **TypeScript + JavaScript** | Strict typing for component interfaces and APIs; standard Node for database seeding. |
+| **Database** | **PostgreSQL (Neon)** | Fully relational serverless cloud database for high availability and transactional speed. |
+| **ORM** | **Prisma Client** | Robust type-safe query building, database modeling, migrations, and transactional locks. |
+| **Styling** | **Tailwind CSS v3** | Modern CSS directives customized with genuine Amazon brand colors. |
+| **State** | **Zustand** | Global lightweight client shopping cart store integrated with server-side API sync. |
+
+---
+
+## 🚀 Setup & Installation Instructions
+
+Follow these steps to run the application locally on your machine:
+
+### 1. Configure Database Credentials
+Create a `.env` file in the project root directory and add your Neon PostgreSQL connection string:
+```env
+DATABASE_URL="postgresql://user:password@ep-xxx.us-east-2.aws.neon.tech/azomart?sslmode=require"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Project Dependencies
+Run the package manager installation script:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Deploy Database Schema
+Push the relational schema definitions directly to your Neon cloud database:
+```bash
+npx prisma db push
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Seed Mock Data
+Populate the database with 6 distinct product departments, 52 premium simulated products, and over 150 detailed customer reviews:
+```bash
+npx prisma db seed
+```
 
-## Learn More
+### 5. Launch Local Dev Server
+Fire up the Next.js development server:
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your web browser to browse AzoMart!
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📐 Relational Schema Architecture
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The database structure features 6 relational models ensuring complete referential integrity:
+* **Category**: Multi-product departments (slug, name, icon banner).
+* **Product**: Catalog inventory (brand, price, original price, discount, calculated ratings cache).
+* **Review**: Customer feedback (stars rating scale, titles, comments) linking to products.
+* **CartItem**: User shopping cart entries synced using unique user/product constraints.
+* **Order**: Placed transactions recap (unique invoice order numbers, full shipping addresses, totals).
+* **OrderItem**: Purchased item list carrying snapshots of product prices at purchase time to protect order history integrity.

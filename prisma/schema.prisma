@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  slug      String    @unique
+  image     String?
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
+model Product {
+  id            Int         @id @default(autoincrement())
+  title         String
+  slug          String      @unique
+  description   String
+  price         Float
+  originalPrice Float
+  discount      Int         @default(0)
+  brand         String
+  images        String[]
+  stock         Int         @default(10)
+  features      String[]
+  ratingAvg     Float       @default(0)
+  ratingCount   Int         @default(0)
+  isFeatured    Boolean     @default(false)
+  categoryId    Int
+  category      Category    @relation(fields: [categoryId], references: [id])
+  reviews       Review[]
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userName  String
+  rating    Int
+  title     String
+  comment   String
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  userId    String   @default("default-user")
+  quantity  Int      @default(1)
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([userId, productId])
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  orderNumber     String      @unique
+  userId          String      @default("default-user")
+  fullName        String
+  addressLine1    String
+  addressLine2    String?
+  city            String
+  state           String
+  zipCode         String
+  phone           String
+  paymentMethod   String      @default("Cash on Delivery")
+  subtotal        Float
+  tax             Float
+  shippingCost    Float
+  totalAmount     Float
+  status          String      @default("Placed")
+  items           OrderItem[]
+  createdAt       DateTime    @default(now())
+}
+
+model OrderItem {
+  id              Int      @id @default(autoincrement())
+  quantity        Int
+  priceAtPurchase Float
+  title           String
+  image           String
+  orderId         Int
+  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId       Int
+  product         Product  @relation(fields: [productId], references: [id])
+}

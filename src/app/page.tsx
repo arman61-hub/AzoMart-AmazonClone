@@ -1,101 +1,205 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Product } from "@/types";
+import FilterSidebar from "@/components/Home/FilterSidebar";
+import ProductGrid from "@/components/Home/ProductGrid";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+
+function HomePageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    total: 0,
+    page: 1,
+    limit: 12,
+    totalPages: 1,
+  });
+
+  const search = searchParams.get("search") || "";
+  const category = searchParams.get("category") || "";
+  const minPrice = searchParams.get("minPrice") || "";
+  const maxPrice = searchParams.get("maxPrice") || "";
+  const minRating = searchParams.get("minRating") || "";
+  const sortBy = searchParams.get("sortBy") || "newest";
+  const page = searchParams.get("page") || "1";
+
+  useEffect(() => {
+    async function fetchProducts() {
+      setLoading(true);
+      try {
+        const query = new URLSearchParams({
+          search,
+          category,
+          minPrice,
+          maxPrice,
+          minRating,
+          sortBy,
+          page,
+          limit: "12",
+        });
+        const res = await fetch(`/api/products?${query.toString()}`);
+        if (res.ok) {
+          const data = await res.json();
+          setProducts(data.products);
+          setPagination(data.pagination);
+        }
+      } catch (err) {
+        console.error("Failed to load products", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, [search, category, minPrice, maxPrice, minRating, sortBy, page]);
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("sortBy", e.target.value);
+    params.set("page", "1");
+    router.push(`/?${params.toString()}`);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > pagination.totalPages) return;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    router.push(`/?${params.toString()}`);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col font-sans pb-16">
+      {/* Hero Banner Section */}
+      <div className="relative w-full h-[220px] sm:h-[350px] md:h-[400px] overflow-hidden select-none bg-amazon-dark">
+        <img
+          src="https://images.unsplash.com/photo-1557821552-17105176677c?w=1600&auto=format&fit=crop&q=80"
+          alt="Banner Sale"
+          className="w-full h-full object-cover opacity-60"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-transparent to-transparent"></div>
+        <div className="absolute bottom-6 left-4 md:left-8 text-white drop-shadow-md">
+          <span className="bg-amazon text-amazon-dark text-xs font-black uppercase px-2.5 py-1 rounded">
+            Super Saving Days
+          </span>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black mt-2 leading-none">
+            Up to 60% Off Essentials
+          </h1>
+          <p className="text-sm sm:text-lg text-gray-200 mt-1 max-w-xl hidden sm:block">
+            Explore deals on electronics, best-selling books, trendy fashion, sports gear, and premium home appliances.
+          </p>
+        </div>
+      </div>
+
+      {/* Main Grid Section with Sidebar */}
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6 mt-[-30px] sm:mt-[-80px] relative z-10">
+        {/* Sidebar Filters */}
+        <FilterSidebar />
+
+        {/* Products Results Pane */}
+        <div className="flex-grow flex flex-col">
+          {/* Sorting / Results Count strip */}
+          <div className="bg-white border border-gray-200 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between shadow-sm mb-5 text-sm font-sans text-gray-700">
+            <div className="font-semibold mb-2 sm:mb-0">
+              {loading ? (
+                <span>Searching products...</span>
+              ) : (
+                <span>
+                  Showing {products.length === 0 ? 0 : (pagination.page - 1) * pagination.limit + 1}-
+                  {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} results
+                  {search && ` for "${search}"`}
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <label htmlFor="sort-select" className="text-gray-500 font-medium whitespace-nowrap">
+                Sort by:
+              </label>
+              <select
+                id="sort-select"
+                value={sortBy}
+                onChange={handleSortChange}
+                className="bg-gray-50 border border-gray-300 rounded px-2 py-1 cursor-pointer outline-none font-semibold text-gray-800 text-xs focus:ring-1 focus:ring-amazon"
+              >
+                <option value="newest">Featured</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+                <option value="rating_desc">Avg. Customer Review</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Dynamic Grid / Loader */}
+          {loading ? (
+            <div className="flex justify-center items-center py-32 bg-white border border-gray-200 rounded-lg shadow-sm w-full">
+              <LoadingSpinner size="lg" />
+            </div>
+          ) : (
+            <ProductGrid products={products} />
+          )}
+
+          {/* Pagination Controls */}
+          {!loading && pagination.totalPages > 1 && (
+            <div className="flex items-center justify-center space-x-2 mt-8 font-sans">
+              <button
+                onClick={() => handlePageChange(pagination.page - 1)}
+                disabled={pagination.page === 1}
+                className={`px-4 py-2 border rounded-md text-xs font-semibold select-none cursor-pointer ${
+                  pagination.page === 1
+                    ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+                    : "bg-white hover:bg-gray-50 border-gray-300 active:scale-95 text-gray-850 transition-all"
+                }`}
+              >
+                Previous
+              </button>
+
+              {Array.from({ length: pagination.totalPages }).map((_, idx) => {
+                const pageNum = idx + 1;
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`w-9 h-9 border rounded-md text-xs font-bold transition-all cursor-pointer ${
+                      pagination.page === pageNum
+                        ? "bg-amazon border-amazon text-amazon-dark"
+                        : "bg-white hover:bg-gray-50 border-gray-300 active:scale-95 text-gray-850"
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+
+              <button
+                onClick={() => handlePageChange(pagination.page + 1)}
+                disabled={pagination.page === pagination.totalPages}
+                className={`px-4 py-2 border rounded-md text-xs font-semibold select-none cursor-pointer ${
+                  pagination.page === pagination.totalPages
+                    ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+                    : "bg-white hover:bg-gray-50 border-gray-300 active:scale-95 text-gray-850 transition-all"
+                }`}
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <Suspense fallback={
+      <div className="flex justify-center items-center py-40">
+        <LoadingSpinner size="lg" />
+      </div>
+    }>
+      <HomePageContent />
+    </Suspense>
   );
 }
