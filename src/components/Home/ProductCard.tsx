@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ShoppingCart, Check } from "lucide-react";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/utils";
@@ -14,6 +15,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const router = useRouter();
   const { addToCart } = useCartStore();
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
@@ -33,11 +35,18 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
+  const handleCardClick = () => {
+    router.push(`/product/${product.id}`);
+  };
+
   // Prime delivery simulation
   const isPrimeEligible = product.price > 500;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg flex flex-col p-4 shadow-sm hover:shadow-lg transition-all duration-300 relative group h-full">
+    <div
+      onClick={handleCardClick}
+      className="bg-white border border-gray-200 rounded-lg flex flex-col p-4 shadow-sm hover:shadow-lg transition-all duration-300 relative group h-full cursor-pointer"
+    >
       {/* Product Image */}
       <Link href={`/product/${product.id}`} className="block relative w-full pt-[100%] overflow-hidden mb-3">
         <img

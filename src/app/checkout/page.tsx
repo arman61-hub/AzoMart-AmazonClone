@@ -121,6 +121,28 @@ export default function CheckoutPage() {
   return (
     <div className="bg-gray-50 min-h-screen py-8 font-sans">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        
+        {/* Navigation Breadcrumbs & Back Link */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5 space-y-2 sm:space-y-0 text-xs select-none">
+          <nav className="flex items-center space-x-2 font-semibold text-gray-500">
+            <Link href="/" className="hover:text-amazon-river hover:underline">
+              Home
+            </Link>
+            <span className="text-gray-400 font-normal">&rsaquo;</span>
+            <Link href="/cart" className="hover:text-amazon-river hover:underline">
+              Shopping Cart
+            </Link>
+            <span className="text-gray-400 font-normal">&rsaquo;</span>
+            <span className="text-gray-800 font-bold">Checkout</span>
+          </nav>
+          <Link
+            href="/cart"
+            className="text-amazon-river hover:text-red-750 font-bold flex items-center space-x-1 hover:underline"
+          >
+            <span>&larr; Back to Shopping Cart</span>
+          </Link>
+        </div>
+
         {/* Distraction-free Checkout Banner title */}
         <div className="flex justify-between items-center pb-4 border-b border-gray-200 mb-8">
           <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 flex items-center">

@@ -95,179 +95,136 @@ export default function OrderConfirmationPage() {
   });
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8 font-sans print:bg-white print:py-0">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
-        {/* Success Splash Card */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6 sm:p-8 shadow-sm flex flex-col items-center text-center space-y-4 print:border-none print:shadow-none">
-          <div className="w-14 h-14 bg-green-100 rounded-full flex justify-center items-center text-green-600 animate-bounce">
-            <Check size={36} className="stroke-[3]" />
-          </div>
-
-          <div className="space-y-1.5">
-            <h1 className="text-xl sm:text-2xl font-bold text-green-700">
-              Order Placed, Thank You!
-            </h1>
-            <p className="text-xs sm:text-sm text-gray-500">
-              Confirmation and dispatch details will be sent shortly.
-            </p>
-            <p className="text-xs font-semibold text-gray-800 bg-gray-100 px-3 py-1 rounded border border-gray-200 inline-block mt-2">
-              Order ID: <span className="text-amazon-river font-bold font-mono">#{order.id}</span>
-            </p>
-          </div>
-
-          {/* Quick Order Info Panel */}
-          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0 divide-y-0 divide-x-0 md:divide-x divide-gray-250 text-xs sm:text-sm w-full max-w-2xl font-semibold text-gray-700 leading-normal justify-around items-center">
-            <div className="px-4 text-center">
-              <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider mb-1">
-                Order ID
-              </span>
-              <span className="font-extrabold text-gray-900 font-mono">#{order.id}</span>
-            </div>
-            <div className="px-4 text-center">
-              <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider mb-1">
-                Order Number
-              </span>
-              <span className="font-extrabold text-gray-900">{order.orderNumber}</span>
-            </div>
-            <div className="px-4 text-center">
-              <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider mb-1">
-                Estimated Delivery
-              </span>
-              <span className="text-green-700 font-extrabold">{formattedDeliveryDate}</span>
-            </div>
-            <div className="px-4 text-center">
-              <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider mb-1">
-                Method
-              </span>
-              <span className="font-extrabold text-gray-900">{order.paymentMethod}</span>
-            </div>
-          </div>
-
-          {/* CTA Actions */}
-          <div className="flex flex-col items-center space-y-3 pt-3 w-full border-t border-gray-150 print:hidden select-none">
-            <div className="flex flex-wrap gap-3 justify-center">
-              <Link
-                href="/"
-                className="bg-amazon hover:bg-amazon-yellow-hover text-amazon-dark font-bold px-6 py-2.5 rounded-full text-xs flex items-center space-x-1.5 shadow-sm cursor-pointer active:scale-95 transition-all outline-none"
-              >
-                <span>Continue Shopping</span>
-                <ArrowRight size={14} className="stroke-[2.5]" />
-              </Link>
-
-              <button
-                onClick={handlePrint}
-                className="bg-white hover:bg-gray-50 border border-gray-300 font-bold px-6 py-2.5 rounded-full text-xs flex items-center space-x-1.5 shadow-sm text-gray-700 cursor-pointer active:scale-95 transition-all outline-none"
-              >
-                <Printer size={14} />
-                <span>Print Receipt</span>
-              </button>
-            </div>
-
-            {/* Countdown timer */}
-            <div className="text-xs text-gray-500 font-medium italic animate-pulse">
-              You will be automatically redirected to the Home page in <span className="font-bold text-red-650 font-mono text-sm">{countdown}</span> seconds...
-            </div>
-          </div>
-        </div>
-
-        {/* Detailed Receipt Section */}
-        <div className="bg-white border border-gray-200 rounded-lg p-5 sm:p-6 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-6 print:border-none print:shadow-none">
-          {/* Shipping Details */}
-          <div className="space-y-2">
-            <h3 className="font-bold text-gray-900 text-sm flex items-center space-x-1.5 border-b border-gray-150 pb-1.5">
-              <MapPin size={16} className="text-gray-400" />
-              <span>Delivery Address</span>
-            </h3>
-            <div className="text-xs text-gray-650 leading-relaxed font-medium">
-              <span className="font-bold text-gray-900 block">{order.fullName}</span>
-              <span>{order.addressLine1}</span>
-              {order.addressLine2 && <span className="block">{order.addressLine2}</span>}
-              <span>
-                {order.city}, {order.state} - {order.zipCode}
-              </span>
-              <span className="block mt-1">Phone: {order.phone}</span>
-            </div>
-          </div>
-
-          {/* Shipping Status */}
-          <div className="space-y-2">
-            <h3 className="font-bold text-gray-900 text-sm flex items-center space-x-1.5 border-b border-gray-150 pb-1.5">
-              <Truck size={16} className="text-gray-400" />
-              <span>Delivery Details</span>
-            </h3>
-            <div className="text-xs text-gray-650 leading-relaxed font-medium space-y-1">
-              <div className="flex items-center space-x-1 font-bold text-green-700">
-                <CheckCircle2 size={14} />
-                <span>Standard Doorstep Shipping</span>
-              </div>
-              <p>Delivery scheduled for {formattedDeliveryDate}.</p>
-              <p className="text-[10px] text-gray-500">
-                Signature required upon Cash on Delivery package arrival.
+    <div className="bg-[#EAEDED] min-h-screen py-8 sm:py-12 font-sans print:bg-white print:py-0">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Main Unified Card */}
+        <div className="bg-white border border-[#d5d9d9] shadow-sm rounded-lg p-6 sm:p-8 md:p-10 print:border-none print:shadow-none">
+          
+          {/* Green Success Alert Banner */}
+          <div className="bg-[#f4faf7] border border-[#d1e7dd] text-[#0f5132] p-4 rounded-md flex items-center space-x-3.5 mb-8">
+            <CheckCircle2 className="w-6 h-6 text-[#198754] shrink-0" />
+            <div>
+              <h2 className="font-bold text-[#198754] text-base leading-tight">
+                Order placed, thank you!
+              </h2>
+              <p className="text-xs text-gray-500 mt-0.5 font-medium">
+                Confirmation will be sent to your email.
               </p>
             </div>
           </div>
 
-          {/* Pricing Breakdown */}
-          <div className="space-y-2">
-            <h3 className="font-bold text-gray-900 text-sm flex items-center space-x-1.5 border-b border-gray-150 pb-1.5">
-              <span>Payment Details</span>
-            </h3>
-            <div className="space-y-2 text-xs font-medium text-gray-650">
-              <div className="flex justify-between">
-                <span>Subtotal:</span>
-                <span className="text-gray-900">{formatPrice(order.subtotal)}</span>
+          {/* Two-Column Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            
+            {/* Left Column: Reference & Shipping */}
+            <div className="md:col-span-7 space-y-6 text-[#0f1111]">
+              
+              {/* Order Reference */}
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 font-sans">
+                  Order Reference
+                </h3>
+                <div className="bg-[#f0f2f2] border border-[#d5d9d9] px-3 py-1.5 rounded inline-block text-xs font-semibold text-gray-800 font-sans shadow-sm select-none">
+                  Order #{order.orderNumber || order.id}
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span>Shipping:</span>
-                <span className="text-gray-900">
-                  {order.shippingCost === 0 ? "FREE" : formatPrice(order.shippingCost)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span>GST (Included):</span>
-                <span className="text-gray-900">{formatPrice(order.tax)}</span>
-              </div>
-              <div className="flex justify-between text-sm font-bold text-red-750 border-t border-gray-150 pt-2">
-                <span>Grand Total:</span>
-                <span>{formatPrice(order.totalAmount)}</span>
+
+              {/* Shipping Information */}
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 font-sans">
+                  Shipping Information
+                </h3>
+                <div className="text-sm text-gray-800 space-y-0.5 font-medium leading-relaxed">
+                  <p className="font-bold text-gray-950">{order.fullName}</p>
+                  <p>{order.addressLine1}</p>
+                  {order.addressLine2 && <p>{order.addressLine2}</p>}
+                  <p>{order.city}, {order.state} {order.zipCode}</p>
+                  <p>India</p>
+                </div>
+
+                {/* Estimated Delivery Box */}
+                <div className="bg-[#f6f6f6] border border-[#e5e7eb] p-3 rounded-lg flex items-center space-x-2.5 mt-5 max-w-md shadow-sm select-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5 text-orange-500 shrink-0 stroke-[1.8]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  <span className="text-xs font-bold text-gray-800 leading-normal">
+                    Arriving {formattedDeliveryDate}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Purchased Items details list */}
-        <div className="bg-white border border-gray-200 rounded-lg p-5 sm:p-6 shadow-sm space-y-4 print:border-none print:shadow-none">
-          <h3 className="font-bold text-gray-900 text-sm border-b border-gray-150 pb-2 flex items-center space-x-2">
-            <ShoppingBag size={16} className="text-gray-400" />
-            <span>Items Purchased</span>
-          </h3>
+            {/* Right Column: Order Summary Side Panel */}
+            <div className="md:col-span-5">
+              <div className="bg-[#f6f6f6] border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-sm">
+                <h3 className="text-base font-bold text-gray-900 border-b border-gray-200 pb-2.5 font-sans">
+                  Order Summary
+                </h3>
 
-          <div className="divide-y divide-gray-150">
-            {order.items?.map((item) => (
-              <div key={item.id} className="py-4 first:pt-0 last:pb-0 flex justify-between items-center space-x-4">
-                <div className="flex items-center space-x-3.5">
-                  <div className="w-10 h-10 bg-white border border-gray-200 rounded p-1 flex justify-center items-center overflow-hidden shrink-0">
-                    <img
-                      src={item.image || "/placeholder.png"}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <span className="text-xs sm:text-sm font-bold text-gray-800 line-clamp-1 max-w-[280px] sm:max-w-xl">
-                      {item.title}
-                    </span>
-                    <span className="text-[10px] sm:text-xs text-gray-500 font-medium">
-                      Qty: {item.quantity} @ {formatPrice(item.priceAtPurchase)} each
-                    </span>
-                  </div>
+                {/* List of Purchased Items */}
+                <div className="space-y-2.5 text-xs text-gray-700 font-medium leading-normal max-h-[180px] overflow-y-auto pr-1">
+                  {order.items?.map((item) => (
+                    <div key={item.id} className="flex justify-between items-start space-x-2">
+                      <span className="line-clamp-2 flex-grow text-gray-800">
+                        {item.title}
+                      </span>
+                      <span className="shrink-0 text-gray-500 font-bold ml-1.5 whitespace-nowrap">
+                        (Qty: {item.quantity})
+                      </span>
+                    </div>
+                  ))}
                 </div>
-                <span className="text-xs sm:text-sm font-bold text-gray-950">
-                  {formatPrice(item.priceAtPurchase * item.quantity)}
-                </span>
+
+                {/* Payment Method */}
+                <div className="border-t border-gray-200 pt-3 flex justify-between items-center text-xs font-semibold leading-normal">
+                  <span className="text-gray-500">Payment Method:</span>
+                  <span className="text-gray-800 font-bold">{order.paymentMethod}</span>
+                </div>
+
+                {/* Grand Total */}
+                <div className="border-t border-gray-200 pt-3 flex justify-between items-baseline leading-normal">
+                  <span className="text-sm font-bold text-gray-900">Total Paid:</span>
+                  <span className="text-lg font-extrabold text-gray-900">
+                    {formatPrice(order.totalAmount)}
+                  </span>
+                </div>
+
+                {/* Action CTA Buttons */}
+                <div className="space-y-2.5 pt-2.5 print:hidden select-none">
+                  <Link
+                    href="/"
+                    className="bg-[#ffd814] hover:bg-[#f7ca00] text-[#0f1111] font-bold py-2 rounded-md text-sm shadow-sm transition-all border border-[#fcd200] hover:border-[#f5c200] cursor-pointer text-center block w-full active:scale-[0.98] outline-none"
+                  >
+                    Continue Shopping
+                  </Link>
+
+                  <button
+                    onClick={handlePrint}
+                    className="bg-white hover:bg-[#f7fafa] border border-[#d5d9d9] font-bold py-2 rounded-md text-sm shadow-sm text-[#0f1111] cursor-pointer active:scale-[0.98] transition-all outline-none block w-full"
+                  >
+                    View or print receipt
+                  </button>
+                </div>
               </div>
-            ))}
+
+              {/* Redirect countdown timer */}
+              <div className="text-center mt-5 text-[11px] text-gray-500 font-medium italic animate-pulse print:hidden">
+                Redirecting to Home page in <span className="font-bold text-red-650 font-mono text-xs">{countdown}</span> seconds...
+              </div>
+            </div>
+
           </div>
+
         </div>
       </div>
     </div>
