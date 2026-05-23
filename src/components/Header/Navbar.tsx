@@ -42,7 +42,9 @@ export default function Navbar() {
 
         {/* Search Bar - Flex Grow on Desktop, hidden on mobile/tablet */}
         <div className="flex-grow max-w-[820px] hidden lg:block">
-          <SearchBar />
+          <React.Suspense fallback={<div className="bg-[#131921] h-10 w-full rounded animate-pulse"></div>}>
+            <SearchBar />
+          </React.Suspense>
         </div>
 
         {/* Indian Flag / Language Selector (Hidden on Mobile/Tablet/Small Desktop) */}
@@ -94,7 +96,9 @@ export default function Navbar() {
 
       {/* Lower Row: Search Bar on mobile and tablet */}
       <div className="px-3 pb-3 pt-1 block lg:hidden">
-        <SearchBar />
+        <React.Suspense fallback={<div className="bg-[#131921] h-10 w-full rounded animate-pulse"></div>}>
+          <SearchBar />
+        </React.Suspense>
       </div>
     </header>
   );
