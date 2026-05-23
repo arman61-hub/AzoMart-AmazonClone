@@ -106,13 +106,14 @@ export default function CartPage() {
                 {items.map((item) => (
                   <div key={item.id} className="py-5 first:pt-0 last:pb-0 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5">
                     {/* Item Image */}
-                    <Link href={`/product/${item.productId}`} className="w-24 h-24 sm:w-28 sm:h-28 shrink-0 bg-white border border-gray-200 rounded p-2 flex justify-center items-center mx-auto sm:mx-0 overflow-hidden relative">
+                    <Link href={`/product/${item.productId}`} className="w-24 h-24 sm:w-28 sm:h-28 shrink-0 bg-white border border-gray-200 rounded overflow-hidden flex justify-center items-center mx-auto sm:mx-0 relative">
                       <img
                         src={item.product.images[0] || "/placeholder.png"}
                         alt={item.product.title}
-                        className="max-w-full max-h-full object-contain"
+                        className="w-full h-full object-cover"
                       />
                     </Link>
+
 
                     {/* Item Details */}
                     <div className="flex-grow flex flex-col justify-between">
@@ -205,9 +206,10 @@ export default function CartPage() {
                     </span>
                   </div>
                   <div className="flex justify-between text-gray-500">
-                    <span>Tax (GST 8%)</span>
+                    <span>GST (Included)</span>
                     <span className="font-semibold text-gray-800">{formatPrice(tax)}</span>
                   </div>
+
                   <div className="flex justify-between text-base font-bold text-gray-900 border-t border-gray-150 pt-2">
                     <span>Order Total</span>
                     <span>{formatPrice(totalAmount)}</span>

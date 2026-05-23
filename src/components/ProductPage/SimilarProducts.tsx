@@ -31,7 +31,7 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
               <img
                 src={prod.images[0] || "/placeholder.png"}
                 alt={prod.title}
-                className="absolute inset-0 w-full h-full object-contain group-hover:scale-102 transition-all duration-300"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-102 transition-all duration-300"
               />
             </div>
 

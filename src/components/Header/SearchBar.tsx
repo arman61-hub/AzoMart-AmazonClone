@@ -48,8 +48,9 @@ export default function SearchBar() {
   return (
     <form
       onSubmit={handleSearch}
-      className="flex flex-grow max-w-2xl h-10 rounded-md overflow-hidden bg-white focus-within:ring-2 focus-within:ring-amazon"
+      className="flex flex-grow max-w-none h-10 rounded-md overflow-hidden bg-white focus-within:ring-2 focus-within:ring-amazon"
     >
+
       {/* Category Dropdown */}
       <select
         value={selectedCategory}

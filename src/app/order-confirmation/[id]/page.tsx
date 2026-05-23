@@ -14,6 +14,24 @@ export default function OrderConfirmationPage() {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [countdown, setCountdown] = useState(10);
+
+  useEffect(() => {
+    if (!order) return;
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          router.push("/");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [order, router]);
 
   useEffect(() => {
     async function fetchOrderDetails() {
@@ -85,30 +103,39 @@ export default function OrderConfirmationPage() {
             <Check size={36} className="stroke-[3]" />
           </div>
 
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <h1 className="text-xl sm:text-2xl font-bold text-green-700">
               Order Placed, Thank You!
             </h1>
             <p className="text-xs sm:text-sm text-gray-500">
               Confirmation and dispatch details will be sent shortly.
             </p>
+            <p className="text-xs font-semibold text-gray-800 bg-gray-100 px-3 py-1 rounded border border-gray-200 inline-block mt-2">
+              Order ID: <span className="text-amazon-river font-bold font-mono">#{order.id}</span>
+            </p>
           </div>
 
           {/* Quick Order Info Panel */}
-          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-gray-200 text-xs sm:text-sm w-full max-w-xl font-semibold text-gray-700 leading-normal justify-around">
-            <div className="py-2.5 sm:py-0 sm:px-4 text-center">
+          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0 divide-y-0 divide-x-0 md:divide-x divide-gray-250 text-xs sm:text-sm w-full max-w-2xl font-semibold text-gray-700 leading-normal justify-around items-center">
+            <div className="px-4 text-center">
+              <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider mb-1">
+                Order ID
+              </span>
+              <span className="font-extrabold text-gray-900 font-mono">#{order.id}</span>
+            </div>
+            <div className="px-4 text-center">
               <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider mb-1">
                 Order Number
               </span>
               <span className="font-extrabold text-gray-900">{order.orderNumber}</span>
             </div>
-            <div className="py-2.5 sm:py-0 sm:px-4 text-center">
+            <div className="px-4 text-center">
               <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider mb-1">
                 Estimated Delivery
               </span>
               <span className="text-green-700 font-extrabold">{formattedDeliveryDate}</span>
             </div>
-            <div className="py-2.5 sm:py-0 sm:px-4 text-center">
+            <div className="px-4 text-center">
               <span className="text-gray-400 block text-[10px] uppercase font-bold tracking-wider mb-1">
                 Method
               </span>
@@ -117,22 +144,29 @@ export default function OrderConfirmationPage() {
           </div>
 
           {/* CTA Actions */}
-          <div className="flex flex-wrap gap-3 pt-3 print:hidden">
-            <Link
-              href="/"
-              className="bg-amazon hover:bg-amazon-yellow-hover text-amazon-dark font-bold px-6 py-2.5 rounded-full text-xs flex items-center space-x-1.5 shadow-sm cursor-pointer active:scale-95 transition-all outline-none"
-            >
-              <span>Continue Shopping</span>
-              <ArrowRight size={14} className="stroke-[2.5]" />
-            </Link>
+          <div className="flex flex-col items-center space-y-3 pt-3 w-full border-t border-gray-150 print:hidden select-none">
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Link
+                href="/"
+                className="bg-amazon hover:bg-amazon-yellow-hover text-amazon-dark font-bold px-6 py-2.5 rounded-full text-xs flex items-center space-x-1.5 shadow-sm cursor-pointer active:scale-95 transition-all outline-none"
+              >
+                <span>Continue Shopping</span>
+                <ArrowRight size={14} className="stroke-[2.5]" />
+              </Link>
 
-            <button
-              onClick={handlePrint}
-              className="bg-white hover:bg-gray-50 border border-gray-300 font-bold px-6 py-2.5 rounded-full text-xs flex items-center space-x-1.5 shadow-sm text-gray-700 cursor-pointer active:scale-95 transition-all outline-none"
-            >
-              <Printer size={14} />
-              <span>Print Receipt</span>
-            </button>
+              <button
+                onClick={handlePrint}
+                className="bg-white hover:bg-gray-50 border border-gray-300 font-bold px-6 py-2.5 rounded-full text-xs flex items-center space-x-1.5 shadow-sm text-gray-700 cursor-pointer active:scale-95 transition-all outline-none"
+              >
+                <Printer size={14} />
+                <span>Print Receipt</span>
+              </button>
+            </div>
+
+            {/* Countdown timer */}
+            <div className="text-xs text-gray-500 font-medium italic animate-pulse">
+              You will be automatically redirected to the Home page in <span className="font-bold text-red-650 font-mono text-sm">{countdown}</span> seconds...
+            </div>
           </div>
         </div>
 
@@ -190,7 +224,7 @@ export default function OrderConfirmationPage() {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span>Tax (GST 8%):</span>
+                <span>GST (Included):</span>
                 <span className="text-gray-900">{formatPrice(order.tax)}</span>
               </div>
               <div className="flex justify-between text-sm font-bold text-red-750 border-t border-gray-150 pt-2">
@@ -216,7 +250,7 @@ export default function OrderConfirmationPage() {
                     <img
                       src={item.image || "/placeholder.png"}
                       alt={item.title}
-                      className="max-w-full max-h-full object-contain"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <div>

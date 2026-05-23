@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AzoMart: Online Shopping for Electronics, Books, Fashion & More",
+  title: "AzoMart:Online Shopping site in India",
   description:
     "AzoMart is a feature-rich, high-performance Amazon clone. Discover amazing deals on top quality products with secure cash on delivery.",
 };

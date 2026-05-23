@@ -23,3 +23,28 @@ export function slugify(text: string): string {
     .replace(/^-+/, "") // Trim - from start of text
     .replace(/-+$/, ""); // Trim - from end of text
 }
+
+export function getCategoryTaxRate(categorySlug: string): number {
+  if (!categorySlug) return 0.18; // Default 18% GST
+  const slug = categorySlug.toLowerCase();
+  
+  switch (slug) {
+    case "books":
+      return 0.0; // 0% GST on Books in India
+    case "fashion":
+    case "sports-outdoors":
+      return 0.12; // 12% GST
+    case "electronics":
+    case "home-kitchen":
+    case "beauty":
+    default:
+      return 0.18; // 18% GST on Electronics, Appliances, Cosmetics
+  }
+}
+
+export function calculateInclusiveTax(price: number, categorySlug: string): number {
+  const rate = getCategoryTaxRate(categorySlug);
+  if (rate === 0) return 0;
+  // Formula: Tax Component = Price - (Price / (1 + Rate))
+  return price - (price / (1 + rate));
+}

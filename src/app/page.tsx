@@ -6,6 +6,8 @@ import { Product } from "@/types";
 import FilterSidebar from "@/components/Home/FilterSidebar";
 import ProductGrid from "@/components/Home/ProductGrid";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import HeroCarousel from "@/components/Home/HeroCarousel";
+
 
 function HomePageContent() {
   const router = useRouter();
@@ -15,7 +17,7 @@ function HomePageContent() {
   const [pagination, setPagination] = useState({
     total: 0,
     page: 1,
-    limit: 12,
+    limit: 8,
     totalPages: 1,
   });
 
@@ -39,7 +41,7 @@ function HomePageContent() {
           minRating,
           sortBy,
           page,
-          limit: "12",
+          limit: "8",
         });
         const res = await fetch(`/api/products?${query.toString()}`);
         if (res.ok) {
@@ -71,30 +73,14 @@ function HomePageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans pb-16">
-      {/* Hero Banner Section */}
-      <div className="relative w-full h-[220px] sm:h-[350px] md:h-[400px] overflow-hidden select-none bg-amazon-dark">
-        <img
-          src="https://images.unsplash.com/photo-1557821552-17105176677c?w=1600&auto=format&fit=crop&q=80"
-          alt="Banner Sale"
-          className="w-full h-full object-cover opacity-60"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-transparent to-transparent"></div>
-        <div className="absolute bottom-6 left-4 md:left-8 text-white drop-shadow-md">
-          <span className="bg-amazon text-amazon-dark text-xs font-black uppercase px-2.5 py-1 rounded">
-            Super Saving Days
-          </span>
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black mt-2 leading-none">
-            Up to 60% Off Essentials
-          </h1>
-          <p className="text-sm sm:text-lg text-gray-200 mt-1 max-w-xl hidden sm:block">
-            Explore deals on electronics, best-selling books, trendy fashion, sports gear, and premium home appliances.
-          </p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#EAEDED] flex flex-col font-sans pb-16">
+      {/* Hero Carousel Banner Section */}
+      <HeroCarousel />
 
       {/* Main Grid Section with Sidebar */}
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6 mt-[-30px] sm:mt-[-80px] relative z-10">
+      <div className="max-w-[1480px] mx-auto w-full px-2 sm:px-4 flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-4 mt-[-20px] sm:mt-[-60px] md:mt-[-100px] lg:mt-[-130px] relative z-10">
+
+
         {/* Sidebar Filters */}
         <FilterSidebar />
 

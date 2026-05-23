@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { generateOrderNumber } from "@/lib/utils";
+import { generateOrderNumber, calculateInclusiveTax } from "@/lib/utils";
 
 const USER_ID = "default-user";
 
@@ -25,11 +25,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get current cart items
+    // Get current cart items including nested product category details
     const cartItems = await prisma.cartItem.findMany({
       where: { userId: USER_ID },
       include: {
-        product: true,
+        product: {
+          include: {
+            category: true,
+          },
+        },
       },
     });
 
@@ -45,11 +49,20 @@ export async function POST(request: NextRequest) {
       (sum, item) => sum + item.product.price * item.quantity,
       0
     );
-    const tax = subtotal * 0.08;
+    
+    // Tax calculated dynamically based on product categories (inclusive)
+    const tax = cartItems.reduce(
+      (sum, item) => sum + calculateInclusiveTax(item.product.price, item.product.category?.slug || "") * item.quantity,
+      0
+    );
+    
     const shippingCost = subtotal > 500 ? 0 : 99;
-    const totalAmount = subtotal + tax + shippingCost;
+    
+    // Inclusive tax: The subtotal already includes the tax, so total is just subtotal + shipping!
+    const totalAmount = subtotal + shippingCost;
 
     const orderNumber = generateOrderNumber();
+
 
     // Run transaction
     const order = await prisma.$transaction(async (tx) => {

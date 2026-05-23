@@ -43,7 +43,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <img
           src={product.images[0] || "/placeholder.png"}
           alt={product.title}
-          className="absolute inset-0 w-full h-full object-contain group-hover:scale-105 transition-all duration-500"
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-500"
         />
         {product.discount > 0 && (
           <span className="absolute top-0 left-0 bg-red-600 text-white text-xs font-extrabold px-2 py-0.5 rounded-br shadow-sm">

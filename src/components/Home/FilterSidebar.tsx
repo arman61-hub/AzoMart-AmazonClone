@@ -78,7 +78,8 @@ export default function FilterSidebar() {
     searchParams.get("search");
 
   return (
-    <aside className="w-full md:w-56 bg-white p-4 rounded-lg border border-gray-200 shrink-0 font-sans">
+    <aside className="w-full md:w-56 bg-white p-4 rounded-lg border border-gray-200 shrink-0 font-sans h-fit">
+
       {/* Clear Filters Title */}
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-sm font-extrabold text-gray-900">Filters</h2>

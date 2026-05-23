@@ -79,7 +79,7 @@ export default function Footer() {
           <Link href="/" className="hover:underline">Interest-Based Ads</Link>
         </div>
         <p className="text-[10px]">
-          &copy; 1996-{new Date().getFullYear()}, AzoMart.com, Inc. or its affiliates. Built entirely from scratch for academic pair programming.
+          &copy; 2026, AzoMart.com, Inc. or its affiliates. Built entirely from scratch for academic pair programming.
         </p>
       </div>
     </footer>

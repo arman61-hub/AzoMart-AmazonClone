@@ -34,6 +34,7 @@ export default function CheckoutPage() {
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
@@ -42,10 +43,10 @@ export default function CheckoutPage() {
 
   // Redirect if cart is empty and not loading
   useEffect(() => {
-    if (!isLoading && items.length === 0) {
+    if (!isLoading && items.length === 0 && !isSuccess) {
       router.push("/cart");
     }
-  }, [isLoading, items, router]);
+  }, [isLoading, items, router, isSuccess]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -94,6 +95,7 @@ export default function CheckoutPage() {
 
       if (res.ok) {
         const order = await res.json();
+        setIsSuccess(true);
         clearCart(); // Clear local zustand cart
         router.push(`/order-confirmation/${order.id}`);
       } else {
@@ -328,7 +330,7 @@ export default function CheckoutPage() {
                         <img
                           src={item.product.images[0] || "/placeholder.png"}
                           alt={item.product.title}
-                          className="max-w-full max-h-full object-contain"
+                          className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="leading-snug">
@@ -382,7 +384,7 @@ export default function CheckoutPage() {
                     <span>{shippingCost === 0 ? "FREE" : formatPrice(shippingCost)}</span>
                   </div>
                   <div className="flex justify-between text-gray-500">
-                    <span>Tax (GST 8%):</span>
+                    <span>GST (Included):</span>
                     <span>{formatPrice(tax)}</span>
                   </div>
                   <div className="flex justify-between text-base font-bold text-red-700 border-t border-gray-150 pt-2.5">

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { CartItem } from "@/types";
+import { calculateInclusiveTax } from "@/lib/utils";
 
 interface CartStore {
   items: CartItem[];
@@ -23,11 +24,18 @@ interface CartStore {
 const calculateTotals = (items: CartItem[]) => {
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  // Tax of 8%
-  const tax = subtotal * 0.08;
+  
+  // Tax calculated dynamically based on product categories (inclusive)
+  const tax = items.reduce(
+    (sum, item) => sum + calculateInclusiveTax(item.product.price, item.product.category?.slug || "") * item.quantity,
+    0
+  );
+  
   // Free shipping over ₹500, otherwise ₹99
   const shippingCost = subtotal > 500 || subtotal === 0 ? 0 : 99;
-  const totalAmount = subtotal + tax + shippingCost;
+  
+  // Inclusive tax: The subtotal already includes the tax, so total is just subtotal + shipping!
+  const totalAmount = subtotal + shippingCost;
 
   return {
     cartCount,
@@ -37,6 +45,7 @@ const calculateTotals = (items: CartItem[]) => {
     totalAmount,
   };
 };
+
 
 export const useCartStore = create<CartStore>((set, get) => ({
   items: [],
